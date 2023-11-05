@@ -9,6 +9,7 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 import Nav from './nav';
 
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { LensClient, development } from "@lens-protocol/client";
-import { RelaySuccessFragment, PaginatedResult, ProfileFragment } from "@lens-protocol/client"
+import { RelaySuccessFragment } from "@lens-protocol/client"
 
 
 const CreateProifle: NextPage = () => {
@@ -32,8 +32,6 @@ const CreateProifle: NextPage = () => {
          *  Property 'unwrap' does not exist on type 'RelaySuccessFragment'.
          */
 
-
-
         if (profileCreateResult.__typename !== "RelaySuccess") {
             console.log(`Something went wrong`, profileCreateResult)
             return
@@ -45,18 +43,13 @@ const CreateProifle: NextPage = () => {
         })
 
 
-        /**
-         * fetch() was not working with handle only
-         */
+
         const profiles = await lensClient.profile.fetchAll({
             where: {
                 ownedBy: [account.address!]
             }
         })
-
-
         console.log(JSON.stringify(profiles))
-
         const newProfile = profiles.items.find(
             (item) => item.handle?.fullHandle === `test/${handle}`
         )
