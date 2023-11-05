@@ -20,6 +20,6 @@ a {
   box-sizing: border-box;
 }
 
-/* .hello {
-  background-color: red;
-} */
+.nav-button {
+  @apply mr-4 font-bold hover:text-blue-600
+}

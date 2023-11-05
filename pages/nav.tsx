@@ -6,10 +6,14 @@ import Link from 'next/link';
 
 const Nav: NextPage = () => {
     return (
-        <div className='flex flex-row  items-center justify-center  ' >
-            <Link href="/" >Dashboard</Link>
-            <Link href="/post">Post Tweet</Link>
-            <Link href="/createProfile">Create Profile</Link>
+        <div className='flex flex-row justify-between px-10 py-4 items-center    bg-green-100   ' >
+            <div>
+                <Link className='nav-button' href="/"   >Dashboard</Link>
+                <Link className='nav-button' href="/post">Post Tweet</Link>
+                <Link className='nav-button' href="/createProfile">Create Profile</Link>
+                <Link className='nav-button' href="/profileManager">Set Profile Manager</Link>
+            </div>
+            <ConnectButton />
         </div>
     );
 };

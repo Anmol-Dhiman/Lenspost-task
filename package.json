@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lens-protocol/client": "^2.0.0-alpha.19",
     "@rainbow-me/rainbowkit": "^1.2.0",
     "next": "^13.4.19",
     "react": "^18.2.0",
