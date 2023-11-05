@@ -77,7 +77,6 @@ const CreateProifle: NextPage = () => {
                         type="text"
                         value={handle}
                         onChange={(e) => setHandle(e.target.value)}
-                        required
                         pattern="[A-Za-z]*"
                         placeholder='Enter User Handle'
                         onKeyDown={(event) => {

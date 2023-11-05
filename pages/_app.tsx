@@ -8,6 +8,7 @@ import {
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import Nav from './nav';
+import { getClient } from '../utils/LensClient';
 
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -27,6 +28,7 @@ const wagmiConfig = createConfig({
   publicClient,
   webSocketPublicClient,
 });
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

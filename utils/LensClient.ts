@@ -8,7 +8,7 @@ const client = new LensClient({
 export const getClient = () => {
     return client
 }
-export const getAuthenticatedClient = async (address: string, profileId?: string) => {
+export const getAuthenticatedClient = async (address: string, profileId: string) => {
     const { id, text } = await client.authentication.generateChallenge({
         signedBy: address,
         for: profileId
@@ -20,5 +20,8 @@ export const getAuthenticatedClient = async (address: string, profileId?: string
     await client.authentication.authenticate({ id, signature });
     return client
 }
-
+export const isLoggedIn = async () => {
+    const isAuthenticated = await client.authentication.isAuthenticated();
+    return isAuthenticated
+}
 

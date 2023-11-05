@@ -1,12 +1,22 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+"use client"
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import Auth from '../components/Auth';
+import { useEffect, useState } from 'react';
+import { getClient, isLoggedIn } from '../utils/LensClient';
 
 const Home: NextPage = () => {
+  const [loggedIn, setLoggedIn] = useState(false)
+  const client = getClient()
+
   return (
     <div>
-      index page
+      {!loggedIn ?
+        <Auth setLoggedIn={setLoggedIn} />
+        : <div>
+          hello world
+        </div>
+      }
     </div>
   );
 };
