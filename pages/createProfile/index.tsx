@@ -33,12 +33,13 @@ const CreateProifle: NextPage = () => {
          *  Property 'unwrap' does not exist on type 'RelaySuccessFragment'.
          */
 
-        if (profileCreateResult.__typename !== "RelaySuccess") {
+        const response = profileCreateResult as RelaySuccessFragment
+        if (response.__typename !== "RelaySuccess") {
             console.log(`Something went wrong`, profileCreateResult)
             setLoading(false)
             return
         }
-        const response = profileCreateResult as RelaySuccessFragment
+
         console.log("success")
         await lensClient.transaction.waitUntilComplete({
             forTxId: response.txId,
