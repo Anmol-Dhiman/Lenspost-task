@@ -88,24 +88,24 @@ const ProfileManager: NextPage = () => {
                                     <div className='flex flex-row items-center   ' >
                                         <div className=' flex flex-row flex-1  items-center' >
                                             <div className='mr-8 flex-1 ' >
-                                                <p className=' text-xs  text-gray-500 ' >Handle</p>
-                                                <p className='  font-bold text-lg     ' >{item.handle?.fullHandle}</p>
+                                                <p className=' info-header ' >Handle</p>
+                                                <p className='  info-text     ' >{item.handle?.fullHandle}</p>
                                             </div>
                                             <div className='mr-8 flex-1 ' >
-                                                <p className=' text-xs  text-gray-500 ' >ID</p>
-                                                <p className='  font-bold text-lg     ' >{item.id}</p>
+                                                <p className=' info-header ' >ID</p>
+                                                <p className='  info-text     ' >{item.id}</p>
                                             </div>
                                             <div className='mr-8 flex-1 ' >
-                                                <p className=' text-xs  text-gray-500 ' >Signless</p>
-                                                <p className='  font-bold text-lg     ' >{`${item.signless}`}</p>
+                                                <p className=' info-header ' >Signless</p>
+                                                <p className='  info-text     ' >{`${item.signless}`}</p>
                                             </div>
 
                                             <div className='mr-8 flex-1 ' >
-                                                <p className=' text-xs  text-gray-500 ' >Created At</p>
-                                                <p className='  font-bold text-lg     ' >{item.createdAt}</p>
+                                                <p className=' info-header ' >Created At</p>
+                                                <p className='  info-text     ' >{item.createdAt}</p>
                                             </div>
                                         </div>
-                                        <button className=' bg-blue-600  rounded-lg px-8 py-2 text-white font-bold  ' onClick={() => toggleProjectManager(item)}  >
+                                        <button className=' bg-[#0e76fd]  rounded-lg px-8 py-2 text-white font-bold  ' onClick={() => toggleProjectManager(item)}  >
                                             {
                                                 item.signless ? "Disable Project Manager" : "Enable Project Manager"
                                             }

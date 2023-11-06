@@ -2,7 +2,7 @@
 "use client"
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { getClient } from '../../utils/LensClient';
+import { getClient, isLoggedIn } from '../../utils/LensClient';
 import Auth from '../../components/Auth';
 import { textOnly } from "@lens-protocol/metadata"
 import { ThirdwebStorage } from "@thirdweb-dev/storage";
@@ -14,8 +14,11 @@ const Post: NextPage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
     const client = getClient()
     const [postText, setText] = useState("")
+    const [loading, setLoading] = useState(false)
+
     const createPost = async () => {
         if (postText === "") return
+        setLoading(true)
         const metaData = textOnly({
             content: postText
         })
@@ -34,26 +37,42 @@ const Post: NextPage = () => {
 
         if (!isRelaySuccess(resultValue)) {
             console.log(`Something went wrong`, resultValue);
+            setLoading(false)
             return;
         }
 
-        console.log(`Transaction was successfully broadcasted with txId ${resultValue.txId}`);
-
+        await client.transaction.waitUntilComplete({
+            forTxId: resultValue.txId,
+        })
+        setLoading(false)
 
     }
 
+
+    useEffect(() => {
+        const auth = async () => {
+            setLoggedIn(await isLoggedIn())
+        }
+        auth()
+    }, [])
     return (
         <div>
+
             {!loggedIn ?
                 <Auth setLoggedIn={setLoggedIn} />
-                : <div className='flex flex-col   justify-center items-center mt-12  ' >
+                : <div className='flex flex-col justify-center items-center mt-12  ' >
                     <input
                         type="text"
                         value={postText}
                         onChange={(e) => setText(e.target.value)}
                         placeholder='Enter Post Content'
+                        className='input-box'
                     />
-                    <button onClick={createPost} >Post</button>
+                    {
+                        loading ?
+                            <p className='mt-12 font-semibold ' >Loading....</p> :
+                            <button onClick={createPost} className='form-button'  >Post</button>
+                    }
                 </div>
             }
         </div>

@@ -43,10 +43,11 @@ const Auth = (props: { setLoggedIn: (value: boolean) => void }) => {
                 value={profileId}
                 onChange={(e) => setProfileId(e.target.value)}
                 placeholder='Enter Profile Id'
+                className="input-box"
                 onKeyDown={(event) => {
                     if (event.code === 'Space') event.preventDefault()
                 }} />
-            <button onClick={logIn} >Log In</button>
+            <button onClick={logIn} className="form-button" >Log In</button>
         </div>
 
     )

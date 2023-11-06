@@ -23,3 +23,28 @@ a {
 .nav-button {
   @apply mr-4 font-bold hover:text-blue-600
 }
+
+.info-header {
+  @apply text-xs text-gray-500
+}
+
+.info-text {
+  @apply font-semibold text-base
+}
+
+.input-box {
+  @apply px-4 py-4 font-medium w-[30%] border-2 rounded-lg
+}
+
+.input-box:focus {
+  outline: none;
+}
+
+.form-button {
+  @apply text-white bg-[#0e76fd] rounded-lg mt-12 w-[30%] py-3 font-bold
+}
+
+.form-button:hover {
+  transform: scale(1.009);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}

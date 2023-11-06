@@ -8,9 +8,6 @@ import {
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import Nav from './nav';
-import { getClient } from '../utils/LensClient';
-
-
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [polygonMumbai],
   [publicProvider()]
@@ -34,8 +31,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
+
         <Nav />
         <Component {...pageProps} />
+
       </RainbowKitProvider>
     </WagmiConfig>
   );
