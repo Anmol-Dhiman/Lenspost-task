@@ -1,64 +1,76 @@
 import type { NextPage } from 'next';
-import { LensClient, development } from "@lens-protocol/client";
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { signTypedData } from '@wagmi/core'
 import { ChangeProfileManagerActionType, PaginatedResult, ProfileFragment, CreateChangeProfileManagersBroadcastItemResultFragment } from "@lens-protocol/client"
-import { TypedDataDomain, walletActions } from 'viem';
+import { TypedDataDomain } from 'viem';
 import { getAuthenticatedClient, getClient } from '../../utils/LensClient';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProfileManager: NextPage = () => {
 
     const [userProfiles, setProfiles] = useState<PaginatedResult<ProfileFragment>>()
     const account = useAccount()
     const client = getClient()
-
+    const authFailure = () => toast.error("You rejected authentication from metamask!")
+    const signatureFailure = () => toast.error("You rejected message signing from metamask!")
 
     const toggleProjectManager = async (profile: ProfileFragment) => {
-        const client = await getAuthenticatedClient(account.address!, profile.id)
-        const typedDataResult = await client.profile.createChangeProfileManagersTypedData({
-            approveSignless: !profile.signless,
-            changeManagers: [
-                {
-                    action: ChangeProfileManagerActionType.Add,
-                    address: account.address!
-                },
-            ],
-        });
-        const { id, typedData } = typedDataResult.unwrap();
-        console.log(JSON.stringify(typedData))
+        try {
+
+            const client = await getAuthenticatedClient(account.address!, profile.id)
+            const typedDataResult = await client.profile.createChangeProfileManagersTypedData({
+                approveSignless: !profile.signless,
+                changeManagers: [
+                    {
+                        action: ChangeProfileManagerActionType.Add,
+                        address: account.address!
+                    },
+                ],
+            });
+            const { id, typedData } = typedDataResult.unwrap();
 
 
-        const domain = typedData.domain as TypedDataDomain
-        const signedTypedData = await signTypedData({
-            domain: domain,
-            message: typedData.value,
-            types: typedData.types,
-            primaryType: "ChangeDelegatedExecutorsConfig"
-        })
-        const broadcastOnchainResult = await client.transaction.broadcastOnchain({
-            id,
-            signature: signedTypedData,
-        });
-        const onchainRelayResult = broadcastOnchainResult.unwrap();
-        if (onchainRelayResult.__typename === "RelayError") {
-            console.log(`Something went wrong`);
-            return;
+            const domain = typedData.domain as TypedDataDomain
+            try {
+                const signedTypedData = await signTypedData({
+                    domain: domain,
+                    message: typedData.value,
+                    types: typedData.types,
+                    primaryType: "ChangeDelegatedExecutorsConfig"
+                })
+                const broadcastOnchainResult = await client.transaction.broadcastOnchain({
+                    id,
+                    signature: signedTypedData,
+                });
+                const onchainRelayResult = broadcastOnchainResult.unwrap();
+                if (onchainRelayResult.__typename === "RelayError") {
+                    const failure = () => toast.error(`Failed to ${profile.signless ? "remove" : "set"} Project Manager for ID : ${profile.id} `)
+                    failure()
+                    return;
+                }
+
+                const success = () => toast.success(`Project Manager successfully ${profile.signless ? "removed" : "set"} for ID :${profile.id}`)
+                success()
+
+                await getProfiles()
+            } catch (e) {
+                signatureFailure()
+            }
+        } catch (e) {
+            authFailure()
         }
-        console.log("success")
-        await getProfiles()
-
     }
 
 
     const getProfiles = async () => {
-        console.log("fetching...")
+
         const allOwnedProfiles = await client.profile.fetchAll({
             where: {
                 ownedBy: [account.address!],
             },
         })
-        console.log("fetched")
+
         setProfiles(allOwnedProfiles)
     }
     useEffect(() => {
@@ -119,6 +131,14 @@ const ProfileManager: NextPage = () => {
                 </div>
             }
 
+            <Toaster
+                toastOptions={{
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }} />
         </div>
     );
 };

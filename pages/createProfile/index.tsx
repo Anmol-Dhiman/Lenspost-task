@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { LensClient, development } from "@lens-protocol/client";
 import { RelaySuccessFragment } from "@lens-protocol/client"
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const CreateProifle: NextPage = () => {
@@ -10,6 +11,8 @@ const CreateProifle: NextPage = () => {
     const lensClient = new LensClient({
         environment: development
     });
+    const handleTakeError = () => toast.error("This Handle name is already taken!")
+    const success = () => toast.success(`New Profile created with handle name as : ${handle}`)
 
     const [loading, setLoading] = useState(false)
     const account = useAccount()
@@ -17,13 +20,12 @@ const CreateProifle: NextPage = () => {
 
     // {"__typename":"RelaySuccess","txHash":"0xf5bcffc0d925f0140d9a429fac840aa630be06e19a90cab1bcc3ab7e0f84ea62","txId":"ae9f80aa-4a72-4728-a177-432264f4763b"}
     const createProfile = async () => {
-        console.log("creating profile")
+
         setLoading(true)
         const profileCreateResult = await lensClient.profile.create({
             handle: handle,
             to: account.address!,
         })
-        console.log(JSON.stringify(profileCreateResult))
 
 
         // getting error here while unwrapping the object 
@@ -35,12 +37,11 @@ const CreateProifle: NextPage = () => {
 
         const response = profileCreateResult as RelaySuccessFragment
         if (response.__typename !== "RelaySuccess") {
-            console.log(`Something went wrong`, profileCreateResult)
+            handleTakeError()
             setLoading(false)
             return
         }
 
-        console.log("success")
         await lensClient.transaction.waitUntilComplete({
             forTxId: response.txId,
         })
@@ -52,14 +53,13 @@ const CreateProifle: NextPage = () => {
                 ownedBy: [account.address!]
             }
         })
-        console.log(JSON.stringify(profiles))
+
         const newProfile = profiles.items.find(
             (item) => item.handle?.fullHandle === `test/${handle}`
         )
 
         if (newProfile) {
-            console.log(`The newly created profile's id is: ${newProfile.id}`)
-
+            success()
         }
         setLoading(false)
 
@@ -95,7 +95,14 @@ const CreateProifle: NextPage = () => {
                     }
                 </div>
             }
-
+            <Toaster
+                toastOptions={{
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                }} />
         </div>
     );
 };

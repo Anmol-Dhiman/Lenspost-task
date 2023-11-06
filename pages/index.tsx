@@ -33,7 +33,6 @@ const Home: NextPage = () => {
       });
       const userData: Post[] = []
       const _post = result.items[0] as PostFragment
-      console.log(JSON.stringify(_post.metadata.rawURI))
 
       result.items.forEach(async (item) => {
         const post = item as PostFragment
@@ -76,6 +75,7 @@ const Home: NextPage = () => {
           }
         </div>
       }
+
     </div>
   );
 };
