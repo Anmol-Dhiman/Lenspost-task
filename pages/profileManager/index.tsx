@@ -6,6 +6,7 @@ import { ChangeProfileManagerActionType, PaginatedResult, ProfileFragment, Creat
 import { TypedDataDomain } from 'viem';
 import { getAuthenticatedClient, getClient } from '../../utils/LensClient';
 import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
 
 type Profile = {
     createdAt: string,
@@ -123,6 +124,12 @@ const ProfileManager: NextPage = () => {
                     Fetching User Profiles....
                 </div>
 
+            }
+            {
+                userProfiles.length === 0 && !loading &&
+                <div className=' font-semibold text-2xl text-center  '  >
+                    You don't have any profile yet <Link href="/createProfile" className=' text-blue-500 '  >Create New Profile</Link>
+                </div>
             }
             {
                 account.isConnected && !loading &&
