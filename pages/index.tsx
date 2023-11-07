@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       setLoggedIn(await isLoggedIn())
     }
     auth()
-  }, [])
+  })
 
   useEffect(() => {
     const getPosts = async () => {
@@ -65,7 +65,8 @@ const Home: NextPage = () => {
           {
             userPosts.map((item) => {
 
-              return <>
+              return (
+
                 <div className='  bg-green-100  rounded-lg px-4 py-4 mx-4 ' key={item.createdAt} >
                   <p className='text-center text-lg font-bold '   >
                     {item.content}
@@ -75,7 +76,7 @@ const Home: NextPage = () => {
                     <p className='info-text' >{item.createdAt} </p>
                   </div>
                 </div>
-              </>
+              )
             })
           }
         </div>

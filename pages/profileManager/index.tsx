@@ -1,12 +1,15 @@
+"use client"
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { signTypedData } from '@wagmi/core'
-import { ChangeProfileManagerActionType, PaginatedResult, ProfileFragment, CreateChangeProfileManagersBroadcastItemResultFragment } from "@lens-protocol/client"
+import { ChangeProfileManagerActionType } from "@lens-protocol/client"
 import { TypedDataDomain } from 'viem';
 import { getAuthenticatedClient, getClient } from '../../utils/LensClient';
 import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
+
+
 
 type Profile = {
     createdAt: string,
@@ -19,6 +22,7 @@ type Profile = {
 const ProfileManager: NextPage = () => {
 
     const [userProfiles, setProfiles] = useState<Profile[]>([])
+    const [update, setUpdate] = useState(0)
     const account = useAccount()
     const client = getClient()
     const [loading, setLoading] = useState(false)
@@ -67,6 +71,7 @@ const ProfileManager: NextPage = () => {
                 setProfiles(_profiles)
 
 
+
             } catch (e) {
                 signatureFailure()
             }
@@ -75,7 +80,6 @@ const ProfileManager: NextPage = () => {
         }
     }
 
-    console.log("user profile" + JSON.stringify(userProfiles))
 
     const getProfiles = async () => {
         const allOwnedProfiles = await client.profile.fetchAll({
@@ -140,8 +144,8 @@ const ProfileManager: NextPage = () => {
                 <div>
                     {
                         userProfiles.map((item, index) => {
-                            return <>
-                                <div className='px-10 mb-6' key={item.id} >
+                            return (
+                                <div className='px-10 mb-6' key={index} >
                                     <div className='flex flex-row items-center   ' >
                                         <div className=' flex flex-row flex-1  items-center' >
                                             <div className='mr-8 flex-1 ' >
@@ -170,7 +174,7 @@ const ProfileManager: NextPage = () => {
                                     </div>
                                     <div className='h-[1px]  bg-slate-400 w-full  mt-4 ' />
                                 </div>
-                            </>
+                            )
                         })
                     }
                 </div>

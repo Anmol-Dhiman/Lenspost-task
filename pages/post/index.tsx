@@ -68,7 +68,7 @@ const Post: NextPage = () => {
             setLoggedIn(await isLoggedIn())
         }
         auth()
-    }, [])
+    })
     return (
         <div>
 
