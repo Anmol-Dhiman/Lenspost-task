@@ -58,7 +58,7 @@ const Home: NextPage = () => {
         <Auth setLoggedIn={setLoggedIn} />
         : <div className='grid grid-cols-4   mt-8 px-8   ' >
           {
-            userPosts.map((item, index) => {
+            userPosts.map((item) => {
 
               return <>
                 <div className='  bg-green-100  rounded-lg px-4 py-4 mx-4 ' key={item.createdAt} >
