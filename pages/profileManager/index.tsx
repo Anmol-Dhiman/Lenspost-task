@@ -62,9 +62,11 @@ const ProfileManager: NextPage = () => {
 
                 const success = () => toast.success(`Project Manager successfully ${profile.signless ? "removed" : "set"} for ID :${profile.id}`)
                 success()
-                const updatedProfile = userProfiles[index]
-                updatedProfile.signless = !profile.signless
-                setProfiles([...userProfiles, updatedProfile])
+                const _profiles = userProfiles
+                _profiles[index].signless = !_profiles[index].signless
+                setProfiles(_profiles)
+
+
             } catch (e) {
                 signatureFailure()
             }
@@ -73,6 +75,7 @@ const ProfileManager: NextPage = () => {
         }
     }
 
+    console.log("user profile" + JSON.stringify(userProfiles))
 
     const getProfiles = async () => {
         const allOwnedProfiles = await client.profile.fetchAll({
@@ -98,6 +101,7 @@ const ProfileManager: NextPage = () => {
         })
         setProfiles(profiles)
     }
+
     useEffect(() => {
         const profiles = async () => {
             if (account.isConnected) {
@@ -114,21 +118,21 @@ const ProfileManager: NextPage = () => {
         <div className='flex flex-col  mt-12  ' >
             {
                 !account.isConnected &&
-                <div className=' font-semibold text-2xl text-center  '  >
+                <div className='info-for-user '  >
                     Connect Your Wallet With Polygon Mumbai Testnet
                 </div>
             }
             {
                 loading &&
-                <div className=' font-semibold text-2xl text-center  '  >
+                <div className='info-for-user  '  >
                     Fetching User Profiles....
                 </div>
 
             }
             {
                 userProfiles.length === 0 && !loading &&
-                <div className=' font-semibold text-2xl text-center  '  >
-                    You don't have any profile yet <Link href="/createProfile" className=' text-blue-500 '  >Create New Profile</Link>
+                <div className='info-for-user'  >
+                    You don not have any profile yet <Link href="/createProfile" className=' text-blue-500 '  >Create New Profile</Link>
                 </div>
             }
             {

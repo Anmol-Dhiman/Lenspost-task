@@ -32,7 +32,6 @@ const Home: NextPage = () => {
         },
       });
       const userData: Post[] = []
-      const _post = result.items[0] as PostFragment
 
       result.items.forEach(async (item) => {
         const post = item as PostFragment
@@ -54,8 +53,14 @@ const Home: NextPage = () => {
 
   return (
     <div>
+      <div className='info-for-user mt-12 '  >
+        User Tweet Dashboard
+      </div>
       {!loggedIn ?
-        <Auth setLoggedIn={setLoggedIn} />
+        <>
+          <p className=' text-center font-normal text-sm  ' >Login before watching your tweets</p>
+          <Auth setLoggedIn={setLoggedIn} />
+        </>
         : <div className='grid grid-cols-4   mt-8 px-8   ' >
           {
             userPosts.map((item) => {

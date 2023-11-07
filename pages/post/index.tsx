@@ -72,8 +72,14 @@ const Post: NextPage = () => {
     return (
         <div>
 
+            <div className='info-for-user mt-12 '  >
+                Post Tweets Here
+            </div>
             {!loggedIn ?
-                <Auth setLoggedIn={setLoggedIn} />
+                <>
+                    <p className=' text-center font-normal text-sm  ' >Login before posting tweet</p>
+                    <Auth setLoggedIn={setLoggedIn} />
+                </>
                 : <div className='flex flex-col justify-center items-center mt-12  ' >
                     <input
                         type="text"

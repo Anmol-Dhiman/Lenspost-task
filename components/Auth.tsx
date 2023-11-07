@@ -42,7 +42,7 @@ const Auth = (props: { setLoggedIn: (value: boolean) => void }) => {
                 type="text"
                 value={profileId}
                 onChange={(e) => setProfileId(e.target.value)}
-                placeholder='Enter Profile Id'
+                placeholder='Enter Profile ID'
                 className="input-box"
                 onKeyDown={(event) => {
                     if (event.code === 'Space') event.preventDefault()

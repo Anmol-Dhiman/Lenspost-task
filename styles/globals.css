@@ -48,3 +48,7 @@ a {
   transform: scale(1.009);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.info-for-user {
+  @apply font-semibold text-2xl text-center
+}
